@@ -48,11 +48,11 @@ class Producer:
             Producer.existing_topics.add(self.topic_name)
 
         # TODO: Configure the AvroProducer
-         self.producer = AvroProducer(
+        self.producer = AvroProducer(
             self.broker_properties,
             default_key_schema=self.key_schema,
             default_value_schema=self.value_schema
-         )
+        )
 
     def create_topic(self):
         """Creates the producer topic if it does not already exist"""

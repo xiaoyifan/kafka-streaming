@@ -5,7 +5,7 @@
   "fields" : [
     {
       "name" : "station_id",
-      "type" : "string"
+      "type" : "int"
     }, 
     {
        "name": "station_name", 
@@ -13,7 +13,7 @@
     }, 
     {
         "name": "line", 
-        "type": "int"
+        "type": "string"
     }
   ]
 }

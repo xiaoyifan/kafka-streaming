@@ -47,16 +47,25 @@ class Turnstile(Producer):
         """Simulates riders entering through the turnstile."""
         try: 
             num_entries = self.turnstile_hardware.get_entries(timestamp, time_step)
-            self.avro_producer.produce(
-            topic=self.topic_name,
-            key={"timestamp": self.time_millis()},
-            value={
-                "station_id": self.station.station_id, 
-                "station_name": self.station.station_name, 
-                "line": num_entries
-            })
+            logger.info(
+                "%s have entered station %s",
+                num_entries,
+                self.station.name
+            )
+            for _ in range(num_entries):
+                self.producer.produce(
+                    topic=self.topic_name,
+                    key={"timestamp": self.time_millis()},
+                    value={
+                        "station_id": self.station.station_id,
+                        "station_name": self.station.name,
+                        "line": self.station.color.name,
+                    },
+                )
         except Exception as e: 
-           logger.info("Turnstile message for {} failed to write to topic {} with exception {}.".format(self.turnstile_id, self.topic_name, e))        
+           logger.info("Turnstile failed to write to topic {} with exception {}.".format(self.topic_name, e))
+           logger.info("schema: {}".format(Turnstile.value_schema))
+           logger.info("value: {}, {}, {}.".format(self.station.station_id, self.station.name, self.station.color.name))        
         #
         #
         # TODO: Complete this function by emitting a message to the turnstile topic for the number
